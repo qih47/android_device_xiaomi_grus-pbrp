@@ -20,7 +20,10 @@ PRODUCT_RELEASE_NAME := grus
 $(call inherit-product, build/target/product/embedded.mk)
 
 # Inherit from our custom product configuration
-$(call inherit-product, vendor/omni/config/common.mk)
+$(call inherit-product, vendor/pb/config/common.mk)
+
+# Inherit from the common Open Source product configuration
+$(call inherit-product, $(SRC_TARGET_DIR)/product/aosp_base_telephony.mk)
 
 # Device identifier. This must come after all inclusions
 PRODUCT_DEVICE := grus
@@ -31,7 +34,16 @@ PRODUCT_MANUFACTURER := Xiaomi
 
 PRODUCT_DEFAULT_PROPERTY_OVERRIDES += \
     ro.treble.enabled=true \
-    sys.usb.controller=a600000.dwc3
+    sys.usb.controller=a600000.dwc3 \
+    persist.sys.usb.config=mtp \
+    persist.service.adb.enable=1 \
+    persist.service.debuggable=1
+
+PRODUCT_BUILD_PROP_OVERRIDES += \
+	TARGET_DEVICE=grus \
+	PRODUCT_NAME=grus \
+	TARGET_VENDOR_PRODUCT_NAME=grus \
+	TARGET_VENDOR_DEVICE_NAME=grus
 
 # HACK: Set vendor patch level
 PRODUCT_PROPERTY_OVERRIDES += \
