@@ -94,6 +94,8 @@ TARGET_COPY_OUT_VENDOR := vendor
 # Crypto
 TW_INCLUDE_CRYPTO := true
 TW_INCLUDE_FBE := true
+TW_INCLUDE_CRYPTO_FBE := true
+TARGET_CRYPTFS_HW_PATH := vendor/qcom/opensource/commonsys/cryptfs_hw
 
 # TWRP specific build flags
 TW_THEME := portrait_hdpi
@@ -110,6 +112,9 @@ TW_USE_TOOLBOX := true
 TW_Y_OFFSET := 80
 TW_H_OFFSET := -80
 TW_CUSTOM_CPU_TEMP_PATH := /sys/devices/virtual/thermal/thermal_zone9/temp
+TW_FORCE_USE_BUSYBOX := true
+TW_OZIP_DECRYPT_KEY := "1c4c1ea3a12531ae491b21bb31613c11"
+TW_SKIP_COMPATIBILITY_CHECK := true
 
 TARGET_RECOVERY_DEVICE_MODULES += libicui18n
 TW_RECOVERY_ADDITIONAL_RELINK_FILES += $(TARGET_OUT_SHARED_LIBRARIES)/libicui18n.so
@@ -120,6 +125,19 @@ TW_RECOVERY_ADDITIONAL_RELINK_FILES += $(TARGET_OUT_SHARED_LIBRARIES)/libion.so
 TARGET_RECOVERY_DEVICE_MODULES += libxml2
 TW_RECOVERY_ADDITIONAL_RELINK_FILES += $(TARGET_OUT_SHARED_LIBRARIES)/libxml2.so
 
-TW_EXCLUDE_TWRPAPP := true
+# exFAT FS Support
+TW_INCLUDE_FUSE_EXFAT := true
+
+# NTFS Support
+TW_INCLUDE_FUSE_NTFS := true
+
+# Debug
+TARGET_USES_LOGD := true
+TWRP_INCLUDE_LOGCAT := true
+
+# TORCH
+PB_TORCH_PATH := "/sys/class/leds/led:torch_0"
+
+
 
 -include vendor/kud/config/recovery.mk
