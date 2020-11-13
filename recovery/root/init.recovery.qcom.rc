@@ -10,6 +10,8 @@ on fs
     chmod 0664 /dev/ion
     chown system system /dev/ion
     install_keyring
+    setprop crypto.ready 0
+    setprop crypto.ready 1
 
     # libsecureui.so requires vendor copy of libhidlbase.so; just bind mount it
     mount none /sbin/libhidlbase.so /vendor/lib64/libhidlbase.so bind
@@ -76,9 +78,9 @@ on property:crypto.ready=0
 
 on property:crypto.ready=1
     start sbinqseecomd
-
-on property:vendor.sys.listeners.registered=true
     start hwservicemanager
     start keymaster-4-0
     start gatekeeper-1-0
     start servicemanager
+
+
