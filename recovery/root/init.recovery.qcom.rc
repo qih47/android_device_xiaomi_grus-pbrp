@@ -13,10 +13,30 @@ on fs
     setprop crypto.ready 0
     setprop crypto.ready 1
 
-    # libsecureui.so requires vendor copy of libhidlbase.so; just bind mount it
-    mount none /sbin/libhidlbase.so /vendor/lib64/libhidlbase.so bind
+on property:twrp.mount_to_decrypt=1
+ start odm_qseecomd
 
-    setprop crypto.ready 1
+on property:twrp.mount_to_decrypt=0
+ stop odm_qseecomd
+ 
+service odm_qseecomd /odm/bin/qseecomd 
+ disabled 
+ user root
+ group root
+ seclabel u:r:recovery:s0 
+
+on init
+ mkdir /system/bin
+ mkdir /system/etc
+ symlink /system/etc /etc
+ symlink /sbin/busybox /system/bin/sh
+ symlink /vendor/manifest.xml /system/manifest.xml
+
+ start hwservicemanager
+ setprop crypto.ready 1
+
+# libsecureui.so requires vendor copy of libhidlbase.so; just bind mount it
+ mount none /sbin/libhidlbase.so /vendor/lib64/libhidlbase.so bind
 
 # Separate copy needed to use /sbin/linker64 instead of /system/bin/linker64
 service sbinqseecomd /sbin/qseecomd
